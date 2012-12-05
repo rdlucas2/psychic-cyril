@@ -57,12 +57,14 @@ function start(route, handle) {
     var app = http.createServer(onRequest).listen(5000);
     console.log("\nServer has started.");
 
-    io = require('socket.io').listen(app);
+    io = require('socket.io');
 
     io.configure(function () {
         io.set("transports", ["xhr-polling"]);
         io.set("polling duration", 10);
     });
+
+    io.listen(app);
 
     io.sockets.on('connection', function (socket) {
 
