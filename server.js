@@ -58,6 +58,12 @@ function start(route, handle) {
     console.log("\nServer has started.");
 
     io = require('socket.io').listen(app);
+
+    io.configure(function () {
+        io.set("transports", ["xhr-polling"]);
+        io.set("polling duration", 10);
+    });
+
     io.sockets.on('connection', function (socket) {
 
         socket.on('set nickname', function (name) {
