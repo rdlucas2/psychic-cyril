@@ -21,7 +21,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
-        var socket = io.connect('http://stormy-tor-1494.herokuapp.com/');
+        var socket = io.connect(window.location.hostname);
         var unique = "";  
         socket.on('connect', function () {
             socket.emit('set nickname', prompt('What is your nickname?'));

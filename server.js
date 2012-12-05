@@ -54,7 +54,7 @@ function start(route, handle) {
             });
         }
     }
-    var app = http.createServer(onRequest).listen();
+    var app = http.createServer(onRequest).listen(80);
     console.log("\nServer has started.");
 
     io = require('socket.io');
@@ -84,3 +84,6 @@ function start(route, handle) {
 }
 
 exports.start = start;
+
+port = process.env.PORT || 3000;
+app.listen(port);
