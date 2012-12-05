@@ -54,7 +54,7 @@ function start(route, handle) {
             });
         }
     }
-    var app = http.createServer(onRequest).listen(8888);
+    var app = http.createServer(onRequest).listen(5000);
     console.log("\nServer has started.");
 
     io = require('socket.io').listen(app);
