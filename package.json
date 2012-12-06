@@ -1,6 +1,10 @@
 {
   "name": "node",
-  "version": "0.8.15",
+  "version": "0.0.0",
+  "engines": {
+    "node": "0.8.15",
+    "npm":  "1.1.66"
+  },
   "description": "my first node project",
   "main": "index.js",
   "dependencies": {
