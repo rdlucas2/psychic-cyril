@@ -2,8 +2,8 @@
   "name": "node",
   "version": "0.0.0",
   "engines": {
-    "node": "0.8.15",
-    "npm":  "1.1.66"
+    "node": "0.8.14",
+    "npm":  "1.1.6"
   },
   "description": "my first node project",
   "main": "index.js",
