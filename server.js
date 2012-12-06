@@ -2,8 +2,6 @@ var http = require("http");
 var url = require("url");
 var fs = require('fs');
 
-var app = http.createServer(onRequest).listen(80);
-
 function start(route, handle) {
     function onRequest(request, response) {
         var postData = "";
@@ -15,6 +13,8 @@ function start(route, handle) {
         } else {
             filePath = './site' + request.url;
         }
+
+        var app = http.createServer(onRequest).listen(80);
 
         console.log("\nRequest for " + pathname + " received.");
 
@@ -56,6 +56,9 @@ function start(route, handle) {
             });
         }
     }
+
+    var app = http.createServer(onRequest).listen(80);
+
     console.log("\nServer has started.");
 
     io = require('socket.io');
@@ -82,9 +85,10 @@ function start(route, handle) {
         });
 
     });
+
+    port = process.env.PORT || 3000;
+    app.listen(port);
+
 }
 
 exports.start = start;
-
-port = process.env.PORT || 3000;
-app.listen(port);
