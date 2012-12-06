@@ -60,25 +60,25 @@ function start(route, handle) {
 
     console.log("\nServer has started.");
 
-    //io = require('socket.io');
+    io = require('socket.io');
 
-    //io.listen(app);
+    io.listen(app);
 
-    //io.sockets.on('connection', function (socket) {
+    io.sockets.on('connection', function (socket) {
 
-    //    socket.on('set nickname', function (name) {
-    //        socket.set('nickname', name, function () { socket.emit('ready'); });
-    //    });
+        socket.on('set nickname', function (name) {
+            socket.set('nickname', name, function () { socket.emit('ready'); });
+        });
 
-    //    socket.on('msg', function (data) {
-    //        socket.get('nickname', function (err, name) {
-    //            console.log('Chat message by ', name);
-    //            io.sockets.emit('user', { user: name });
-    //            io.sockets.emit('sent', { sent: data });
-    //        });
-    //    });
+        socket.on('msg', function (data) {
+            socket.get('nickname', function (err, name) {
+                console.log('Chat message by ', name);
+                io.sockets.emit('user', { user: name });
+                io.sockets.emit('sent', { sent: data });
+            });
+        });
 
-    //});
+    });
 
 }
 
