@@ -14,8 +14,6 @@ function start(route, handle) {
             filePath = './site' + request.url;
         }
 
-        var app = http.createServer(onRequest).listen(80);
-
         console.log("\nRequest for " + pathname + " received.");
 
         if (fs.existsSync(filePath)) {
