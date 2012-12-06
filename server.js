@@ -62,6 +62,12 @@ function start(route, handle) {
 
     io = require('socket.io');
 
+    io.configure(function () {
+        io.set("transports", ["xhr-polling"]);
+        io.set("polling duration", 10);
+    });
+    socket = new io.Socket();
+
     io.listen(app);
 
     io.sockets.on('connection', function (socket) {
