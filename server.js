@@ -62,7 +62,7 @@ function start(route, handle) {
 
     io = require('socket.io').listen(app);
 
-
+    var userlist = {};
     io.sockets.on('connection', function (socket) {
 
         var UNAME = "";
@@ -70,6 +70,9 @@ function start(route, handle) {
             socket.set('nickname', name, function () { socket.emit('ready'); });
             io.sockets.emit('loggedin', { loggedin: name });
             UNAME = name;
+            userlist[name] = name;
+            console.log(userlist);
+            io.sockets.emit('userlist', userlist);
         });
 
 
@@ -83,6 +86,10 @@ function start(route, handle) {
 
         socket.on('disconnect', function (data) {
             io.sockets.emit('disconnecting', { user: UNAME });
+            console.log(userlist);
+            delete userlist[UNAME];
+            console.log(userlist);
+            io.sockets.emit('userlist', userlist);
         });
 
     });

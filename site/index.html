@@ -38,7 +38,6 @@
         var name = "";
         socket.on('loggedin', function (data) {
             name = data['loggedin'];
-            $("#USERS").append('<p id="' + name + '">' + name + '</p>');
             $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + name + '</span><span class="' + unique + 'sent"> has connected...</span></div>');
         });
 
@@ -63,9 +62,15 @@
 
         socket.on('disconnecting', function (data) {
             $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + data['user'] + '</span><span class="' + unique + 'sent"> has disconnected...</span></div>');
-            $("#" + data['user']).remove();
         });
 
+        socket.on('userlist', function (data) {
+            console.log(data)
+            $('#USERS').empty();
+            $.each(data, function (key, value) {
+                $('#USERS').append('<div>' + key + '</div>');
+            });
+        });
 
     </script>
     <style type="text/css">
