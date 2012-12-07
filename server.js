@@ -62,18 +62,27 @@ function start(route, handle) {
 
     io = require('socket.io').listen(app);
 
+
     io.sockets.on('connection', function (socket) {
 
+        var UNAME = "";
         socket.on('set nickname', function (name) {
             socket.set('nickname', name, function () { socket.emit('ready'); });
+            io.sockets.emit('loggedin', { loggedin: name });
+            UNAME = name;
         });
 
+
         socket.on('msg', function (data) {
-            socket.get('nickname', function (err, name) {
-                console.log('Chat message by ', name);
-                io.sockets.emit('user', { user: name });
+            socket.get('nickname', function (err, UNAME) {
+                console.log('Chat message by ', UNAME);
+                io.sockets.emit('user', { user: UNAME });
                 io.sockets.emit('sent', { sent: data });
             });
+        });
+
+        socket.on('disconnect', function (data) {
+            io.sockets.emit('disconnecting', { user: UNAME });
         });
 
     });

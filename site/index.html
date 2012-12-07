@@ -22,16 +22,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
         var socket = io.connect(window.location.hostname);
-        var unique = "";  
-        socket.on('connect', function () {
-            socket.emit('set nickname', prompt('What is your nickname?'));
-            socket.on('ready', function () {
-                $("#SEND").click(function () {
-                    socket.emit('msg', $("#TEXT").val());
-                    unique = Math.random();
-                });
-            });
-        });
+        var unique = "";
 
         var msgRecieved = "";
         var userRecieved = "";
@@ -44,12 +35,44 @@
             $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + userRecieved + ' says: </span><span class="' + unique + 'sent">' + msgRecieved + '</span></div>')
         });
 
+        var name = "";
+        socket.on('loggedin', function (data) {
+            name = data['loggedin'];
+            $("#USERS").append('<p id="' + name + '">' + name + '</p>');
+            $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + name + '</span><span class="' + unique + 'sent"> has connected...</span></div>');
+        });
+
+        socket.on('connect', function () {
+            socket.emit('set nickname', prompt('What is your nickname?'));
+            socket.on('ready', function () {
+                $("#SEND").click(function () {
+                    socket.emit('msg', $("#TEXT").val());
+                    unique = Math.random();
+                    $('#TEXT').val("");
+                });
+                $('#TEXT').bind('keyup', function (e) {
+
+                    if (e.keyCode === 13) { // 13 is enter key
+                        socket.emit('msg', $("#TEXT").val());
+                        unique = Math.random();
+                        $('#TEXT').val("");
+                    }
+                });
+            });
+        });
+
+        socket.on('disconnecting', function (data) {
+            $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + data['user'] + '</span><span class="' + unique + 'sent"> has disconnected...</span></div>');
+            $("#" + data['user']).remove();
+        });
+
+
     </script>
     <style type="text/css">
         /* Ryan Lucas Custom Styles */
         #main {
-            height:220px;
-            overflow:auto;
+            height: 220px;
+            overflow: auto;
         }
     </style>
 </head>
@@ -61,13 +84,14 @@
     <!-- Add your site or application content here -->
 
     <div id="main">
-    <div class="message">
-    <span class="user"></span><span class="sent"></span>
-    </div>
+        <div class="message">
+            <span class="user"></span><span class="sent"></span>
+        </div>
     </div>
 
-    <textarea id="TEXT" name="text" rows="20" cols="60"></textarea>
+    <textarea id="TEXT" name="text" rows="10" cols="60"></textarea>
     <input type="submit" value="Send" name="submit" id="SEND" />
+    <div id="USERS"></div>
 
     <hr />
 
