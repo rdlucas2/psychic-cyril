@@ -32,13 +32,37 @@
 
         socket.on('sent', function (data) {
             msgRecieved = data["sent"];
-            $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + userRecieved + ' says: </span><span class="' + unique + 'sent">' + msgRecieved + '</span></div>')
+            var scrollable = $('#main');
+            var inner = $('#main > .inner');
+
+            var atBottom = Math.abs(inner.offset().top) + scrollable.height() + scrollable.offset().top >= inner.outerHeight();
+
+            inner.append('<div class="' + unique + 'message"><span class="' + unique + 'user">' + userRecieved + ' says: </span><span class="' + unique + 'sent">' + msgRecieved + '</span></div>')
+
+            if (atBottom) {
+                scrollable.animate({ scrollTop: inner.outerHeight() });
+            }
         });
 
         var name = "";
         socket.on('loggedin', function (data) {
             name = data['loggedin'];
-            $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + name + '</span><span class="' + unique + 'sent"> has connected...</span></div>');
+            var scrollable = $('#main');
+            var inner = $('#main > .inner');
+
+            var atBottom = Math.abs(inner.offset().top) + scrollable.height() + scrollable.offset().top >= inner.outerHeight();
+            unique = Math.random();
+
+            inner.append('<div class="' + unique + 'message"><span class="' + unique + 'user">' + name + '</span><span class="' + unique + 'sent"> has connected...</span></div>');
+
+            if (atBottom) {
+                scrollable.animate({ scrollTop: inner.outerHeight() });
+            }
+        });
+
+        socket.on('duplicateNickname', function () {
+            alert("Someone is already using that name!");
+            socket.emit('set nickname', prompt('What is your nickname?'));
         });
 
         socket.on('connect', function () {
@@ -61,7 +85,16 @@
         });
 
         socket.on('disconnecting', function (data) {
-            $("#main").prepend('<div class="' + unique + 'message"><span class="' + unique + 'user">' + data['user'] + '</span><span class="' + unique + 'sent"> has disconnected...</span></div>');
+            var scrollable = $('#main');
+            var inner = $('#main > .inner');
+
+            var atBottom = Math.abs(inner.offset().top) + scrollable.height() + scrollable.offset().top >= inner.outerHeight();
+
+            inner.append('<div class="' + unique + 'message"><span class="' + unique + 'user">' + data['user'] + '</span><span class="' + unique + 'sent"> has disconnected...</span></div>');
+
+            if (atBottom) {
+                scrollable.animate({ scrollTop: inner.outerHeight() });
+            }
         });
 
         socket.on('userlist', function (data) {
@@ -75,9 +108,46 @@
     </script>
     <style type="text/css">
         /* Ryan Lucas Custom Styles */
+
+        #outer {
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        #inner {
+            float:left;
+        }
+
         #main {
             height: 220px;
+            width: 800px;
+            float: left;
             overflow: auto;
+            word-wrap: break-word;
+        }
+
+        #USERS {
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        #userouter {
+            height: 220px;
+            width: 200px;
+            float: right;
+            clear:both;
+        }
+
+        #TEXT {
+            float: left;
+            width: 580px;
+            height: 220px;
+        }
+
+        #SEND {
+            clear: both;
+            float: right;
+            margin: 10px 210px 0 0;
         }
     </style>
 </head>
@@ -87,22 +157,22 @@
         <![endif]-->
 
     <!-- Add your site or application content here -->
-
-    <div id="main">
-        <div class="message">
-            <span class="user"></span><span class="sent"></span>
+    <div id="outer">
+        <div id="inner">
+            <div id="main">
+                <div class="inner">
+                    <div class="message">
+                        <span class="user"></span><span class="sent"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="userouter">
+                <h4>Users:</h4>
+                <div id="USERS"></div>
+            </div>
+            <textarea id="TEXT" name="text"></textarea>
+            <input type="submit" value="Send" name="submit" id="SEND" />
         </div>
     </div>
-
-    <textarea id="TEXT" name="text" rows="10" cols="60"></textarea>
-    <input type="submit" value="Send" name="submit" id="SEND" />
-    <div id="USERS"></div>
-
-    <hr />
-
-    <form action="/upload" method="post">
-        <textarea id="box" name="text" rows="20" cols="60"></textarea>
-        <input type="submit" value="Submit" name="submit" id="SUBMIT" />
-    </form>
 </body>
 </html>

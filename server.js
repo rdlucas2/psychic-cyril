@@ -67,12 +67,17 @@ function start(route, handle) {
 
         var UNAME = "";
         socket.on('set nickname', function (name) {
+            if (userlist.hasOwnProperty(name)) {
+                socket.emit('duplicateNickname');
+            }
+            else { 
             socket.set('nickname', name, function () { socket.emit('ready'); });
             io.sockets.emit('loggedin', { loggedin: name });
             UNAME = name;
             userlist[name] = name;
             console.log(userlist);
             io.sockets.emit('userlist', userlist);
+            }
         });
 
 
