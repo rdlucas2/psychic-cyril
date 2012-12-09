@@ -87,7 +87,7 @@ function start(route, handle) {
             console.log(message["pm"]);
             var socketid = userlist[message["pmu"]];
             console.log(socketid);
-            io.sockets.socket(socketid).emit('for your eyes only', { pm: message["pm"], pmu: message["pmu"] });
+            io.sockets.socket(socketid).emit('for your eyes only', { pm: message["pm"], pmf: message["pmf"] });
         });
 
         socket.on('msg', function (data) {
