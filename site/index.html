@@ -101,8 +101,30 @@
             console.log(data)
             $('#USERS').empty();
             $.each(data, function (key, value) {
-                $('#USERS').append('<div>' + key + '</div>');
+                $('#USERS').append('<div><a href="#" class="' + key + '">' + key + '</a></div>');
             });
+        });
+
+        $('#USERS a').live("click", function (e) {
+            e.preventDefault();
+            pmu = $(this).text();
+            socket.emit('private msg', { pm: prompt('Private Message to this user:'), pmu: pmu });
+        });
+
+        socket.on('for your eyes only', function (data) {
+            console.log(data["pm"]);
+            msgRecieved = data["pm"];
+            userRecieved = data["pmu"];
+            var scrollable = $('#main');
+            var inner = $('#main > .inner');
+
+            var atBottom = Math.abs(inner.offset().top) + scrollable.height() + scrollable.offset().top >= inner.outerHeight();
+
+            inner.append('<div style="color:red" class="' + unique + 'message"><span class="' + unique + 'user">' + userRecieved + ' whispers: </span><span class="' + unique + 'sent">' + msgRecieved + '</span></div>')
+
+            if (atBottom) {
+                scrollable.animate({ scrollTop: inner.outerHeight() });
+            }
         });
 
     </script>

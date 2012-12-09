@@ -67,7 +67,7 @@ function start(route, handle) {
 
         var UNAME = "";
         socket.on('set nickname', function (name) {
-            if (userlist.hasOwnProperty(name)) {
+            if (userlist.hasOwnProperty(name) || name == null || name == "") {
                 socket.emit('duplicateNickname');
             }
             else { 
@@ -75,11 +75,20 @@ function start(route, handle) {
             io.sockets.emit('loggedin', { loggedin: name });
             UNAME = name;
             userlist[name] = name;
+            userlist[name] = socket.id;
             console.log(userlist);
             io.sockets.emit('userlist', userlist);
             }
         });
 
+        socket.on('private msg', function (message) {
+            console.log(message);
+            console.log(message["pmu"]);
+            console.log(message["pm"]);
+            var socketid = userlist[message["pmu"]];
+            console.log(socketid);
+            io.sockets.socket(socketid).emit('for your eyes only', { pm: message["pm"], pmu: message["pmu"] });
+        });
 
         socket.on('msg', function (data) {
             socket.get('nickname', function (err, UNAME) {
