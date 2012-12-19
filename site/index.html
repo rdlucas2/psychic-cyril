@@ -64,19 +64,54 @@
             alert("Someone is already using that name!");
             socket.emit('set nickname', prompt('What is your nickname?'));
         });
-
+        
         socket.on('connect', function () {
             socket.emit('set nickname', prompt('What is your nickname?'));
             socket.on('ready', function () {
                 $("#SEND").click(function () {
-                    socket.emit('msg', $("#TEXT").val());
+                    if ($('#TEXT').val().substr(0, 2) == "/w") {
+                        tname = $('#TEXT').val().split(" ", 2);
+                        message = $('#TEXT').val().split(tname[1], 2)
+                        pmu = tname[1];
+                        pmf = name;
+                        socket.emit('private msg', { pm: message[1], pmu: pmu, pmf: pmf });
+                        unique = Math.random();
+                        var scrollable = $('#main');
+                        var inner = $('#main > .inner');
+                        var atBottom = Math.abs(inner.offset().top) + scrollable.height() + scrollable.offset().top >= inner.outerHeight();
+                        inner.append('<div style="color:red" class="' + unique + 'message"><span class="' + unique + 'user">To ' + pmu + ': </span><span class="' + unique + 'sent">' + message[1] + '</span></div>')
+                        if (atBottom) {
+                            scrollable.animate({ scrollTop: inner.outerHeight() });
+                        }
+
+                    }
+                    else {
+                        socket.emit('msg', $("#TEXT").val());
+                    }
                     unique = Math.random();
                     $('#TEXT').val("");
                 });
                 $('#TEXT').bind('keyup', function (e) {
-
                     if (e.keyCode === 13) { // 13 is enter key
-                        socket.emit('msg', $("#TEXT").val());
+                        if ($('#TEXT').val().substr(0, 2) == "/w") {
+                            tname = $('#TEXT').val().split(" ", 2);
+                            message = $('#TEXT').val().split(tname[1], 2)
+                            pmu = tname[1];
+                            pmf = name;
+                            socket.emit('private msg', { pm: message[1], pmu: pmu, pmf: pmf });
+                            unique = Math.random();
+                            var scrollable = $('#main');
+                            var inner = $('#main > .inner');
+                            var atBottom = Math.abs(inner.offset().top) + scrollable.height() + scrollable.offset().top >= inner.outerHeight();
+                            inner.append('<div style="color:red" class="' + unique + 'message"><span class="' + unique + 'user">To ' + pmu + ': </span><span class="' + unique + 'sent">' + message[1] + '</span></div>')
+                            if (atBottom) {
+                                scrollable.animate({ scrollTop: inner.outerHeight() });
+                            }
+
+                        }
+                        else {
+                            socket.emit('msg', $("#TEXT").val());
+                        }
                         unique = Math.random();
                         $('#TEXT').val("");
                     }
@@ -136,7 +171,7 @@
         }
 
         #inner {
-            float:left;
+            float: left;
         }
 
         #main {
@@ -156,7 +191,7 @@
             height: 220px;
             width: 200px;
             float: right;
-            clear:both;
+            clear: both;
         }
 
         #TEXT {
