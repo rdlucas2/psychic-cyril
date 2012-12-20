@@ -106,6 +106,13 @@ function start(route, handle) {
             io.sockets.emit('userlist', userlist);
         });
 
+        socket.on('xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnxy', { x: x, y: y })
+        });
+
+
     });
 
 }

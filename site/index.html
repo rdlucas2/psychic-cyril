@@ -64,7 +64,7 @@
             alert("Someone is already using that name!");
             socket.emit('set nickname', prompt('What is your nickname?'));
         });
-        
+
         socket.on('connect', function () {
             socket.emit('set nickname', prompt('What is your nickname?'));
             socket.on('ready', function () {
@@ -205,6 +205,12 @@
             float: right;
             margin: 10px 210px 0 0;
         }
+
+        #canvas {
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -215,6 +221,7 @@
     <!-- Add your site or application content here -->
     <div id="outer">
         <div id="inner">
+
             <div id="main">
                 <div class="inner">
                     <div class="message">
@@ -222,12 +229,94 @@
                     </div>
                 </div>
             </div>
+
             <div id="userouter">
                 <h4>Users:</h4>
                 <div id="USERS"></div>
             </div>
+
             <textarea id="TEXT" name="text"></textarea>
+
             <input type="submit" value="Send" name="submit" id="SEND" />
+
+            <canvas id="canvas">Your browser does not support the Html 5 canvas :-(</canvas>
+
+            <script>
+                //canvas setup
+                var c = document.getElementById("canvas");
+                var ctx = c.getContext("2d");
+
+                //initial ship position
+                var x = canvas.width;
+                var y = canvas.height;
+                var s = 10;
+
+                var drawship = function (side) {
+                    //reset the background
+                    ctx.fillStyle = "#FFFFFF";
+                    ctx.strokeStyle = "#FFFFFF";
+                    ctx.fillRect(0, 0, 800, 600);
+
+                    var w = side;
+                    var h = side * (Math.sqrt(3) / 2);
+                    ctx.save();
+                    ctx.translate(x / 2, y / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(0, -h / 2);
+                    ctx.lineTo(w / 2, h / 2);
+                    ctx.lineTo(-w / 2, h / 2);
+                    ctx.lineTo(0, -h / 2);
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    ctx.fill();
+                    ctx.closePath();
+                    ctx.restore();
+                };
+
+                //keyboard
+                $(document).keyup(function (e) {
+                    e.preventDefault();
+                    switch (e.keyCode) {
+                        case 37:
+                            //left
+                            x -= 10;
+                            break;
+                        case 38:
+                            //up
+                            y -= 10;
+                            break;
+                        case 39:
+                            //right
+                            x += 10;
+                            break;
+                        case 40:
+                            //down
+                            y += 10;
+                            break;
+                    }
+                    socket.emit('xy', {x: x, y: y});
+                    socket.on('returnxy', function (data) {
+                        x = data["x"];
+                        y = data["y"];
+                        drawship(s);
+                        return false;
+                    });
+                });
+
+                //ipad/mobile
+                $('#canvas').bind('touchmove', function (e) {
+                    e.preventDefault();
+                    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                    x = touch.pageX - 90;
+                    y = touch.pageY - 140;
+                    drawship(s);
+                    return false;
+                });
+
+            </script>
+
         </div>
     </div>
 </body>
