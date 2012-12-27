@@ -73,8 +73,7 @@
                         tname = $('#TEXT').val().split(" ", 2);
                         message = $('#TEXT').val().split(tname[1], 2)
                         pmu = tname[1];
-                        pmf = name;
-                        socket.emit('private msg', { pm: message[1], pmu: pmu, pmf: pmf });
+                        socket.emit('private msg', { pm: message[1], pmu: pmu});
                         unique = Math.random();
                         var scrollable = $('#main');
                         var inner = $('#main > .inner');
@@ -97,8 +96,7 @@
                             tname = $('#TEXT').val().split(" ", 2);
                             message = $('#TEXT').val().split(tname[1], 2)
                             pmu = tname[1];
-                            pmf = name;
-                            socket.emit('private msg', { pm: message[1], pmu: pmu, pmf: pmf });
+                            socket.emit('private msg', { pm: message[1], pmu: pmu});
                             unique = Math.random();
                             var scrollable = $('#main');
                             var inner = $('#main > .inner');
@@ -143,7 +141,7 @@
             e.preventDefault();
             pmu = $(this).text();
             pmf = name;
-            socket.emit('private msg', { pm: prompt('Private Message to this user:'), pmu: pmu, pmf: pmf });
+            socket.emit('private msg', { pm: prompt('Private Message to this user:'), pmu: pmu});
         });
 
         socket.on('for your eyes only', function (data) {
@@ -282,27 +280,48 @@
                         case 37:
                             //left
                             x -= 10;
+                            socket.emit('xy', { x: x, y: y });
+                            socket.on('returnxy', function (data) {
+                                x = data["x"];
+                                y = data["y"];
+                                drawship(s);
+                                return false;
+                            });
                             break;
                         case 38:
                             //up
                             y -= 10;
+                            socket.emit('xy', { x: x, y: y });
+                            socket.on('returnxy', function (data) {
+                                x = data["x"];
+                                y = data["y"];
+                                drawship(s);
+                                return false;
+                            });
                             break;
                         case 39:
                             //right
                             x += 10;
+                            socket.emit('xy', { x: x, y: y });
+                            socket.on('returnxy', function (data) {
+                                x = data["x"];
+                                y = data["y"];
+                                drawship(s);
+                                return false;
+                            });
                             break;
                         case 40:
                             //down
                             y += 10;
+                            socket.emit('xy', { x: x, y: y });
+                            socket.on('returnxy', function (data) {
+                                x = data["x"];
+                                y = data["y"];
+                                drawship(s);
+                                return false;
+                            });
                             break;
                     }
-                    socket.emit('xy', {x: x, y: y});
-                    socket.on('returnxy', function (data) {
-                        x = data["x"];
-                        y = data["y"];
-                        drawship(s);
-                        return false;
-                    });
                 });
 
                 //ipad/mobile

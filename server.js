@@ -70,24 +70,24 @@ function start(route, handle) {
             if (userlist.hasOwnProperty(name) || name == null || name == "") {
                 socket.emit('duplicateNickname');
             }
-            else { 
-            socket.set('nickname', name, function () { socket.emit('ready'); });
-            io.sockets.emit('loggedin', { loggedin: name });
-            UNAME = name;
-            userlist[name] = name;
-            userlist[name] = socket.id;
-            console.log(userlist);
-            io.sockets.emit('userlist', userlist);
+            else {
+                socket.set('nickname', name, function () { socket.emit('ready'); });
+                io.sockets.emit('loggedin', { loggedin: name });
+                UNAME = name;
+                userlist[name] = name;
+                userlist[name] = socket.id;
+                console.log(userlist);
+                io.sockets.emit('userlist', userlist);
             }
         });
 
         socket.on('private msg', function (message) {
-            console.log(message);
-            console.log(message["pmu"]);
-            console.log(message["pm"]);
-            var socketid = userlist[message["pmu"]];
-            console.log(socketid);
-            io.sockets.socket(socketid).emit('for your eyes only', { pm: message["pm"], pmf: message["pmf"] });
+            socket.get('nickname', function (err, UNAME) {
+                console.log('PM message by ', UNAME);
+                var socketid = userlist[message["pmu"]];
+                console.log(socketid);
+                io.sockets.socket(socketid).emit('for your eyes only', { pm: message["pm"], pmf: UNAME });
+            });
         });
 
         socket.on('msg', function (data) {
