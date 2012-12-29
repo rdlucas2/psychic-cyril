@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/main.css">
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/v4.2.0/kinetic-v4.2.0.min.js" type="text/javascript"></script>
 
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
@@ -73,7 +74,7 @@
                         tname = $('#TEXT').val().split(" ", 2);
                         message = $('#TEXT').val().split(tname[1], 2)
                         pmu = tname[1];
-                        socket.emit('private msg', { pm: message[1], pmu: pmu});
+                        socket.emit('private msg', { pm: message[1], pmu: pmu });
                         unique = Math.random();
                         var scrollable = $('#main');
                         var inner = $('#main > .inner');
@@ -96,7 +97,7 @@
                             tname = $('#TEXT').val().split(" ", 2);
                             message = $('#TEXT').val().split(tname[1], 2)
                             pmu = tname[1];
-                            socket.emit('private msg', { pm: message[1], pmu: pmu});
+                            socket.emit('private msg', { pm: message[1], pmu: pmu });
                             unique = Math.random();
                             var scrollable = $('#main');
                             var inner = $('#main > .inner');
@@ -141,7 +142,7 @@
             e.preventDefault();
             pmu = $(this).text();
             pmf = name;
-            socket.emit('private msg', { pm: prompt('Private Message to this user:'), pmu: pmu});
+            socket.emit('private msg', { pm: prompt('Private Message to this user:'), pmu: pmu });
         });
 
         socket.on('for your eyes only', function (data) {
@@ -205,9 +206,10 @@
         }
 
         #canvas {
-            width: 600px;
-            height: 400px;
+            width: 624px;
+            height: 624px;
             overflow: hidden;
+            background: url(/img/EmptyBoard.gif);
         }
     </style>
 </head>
@@ -217,6 +219,7 @@
         <![endif]-->
 
     <!-- Add your site or application content here -->
+    <div id="canvas"></div>
     <div id="outer">
         <div id="inner">
 
@@ -237,103 +240,57 @@
 
             <input type="submit" value="Send" name="submit" id="SEND" />
 
-            <canvas id="canvas">Your browser does not support the Html 5 canvas :-(</canvas>
-
             <script>
-                //canvas setup
-                var c = document.getElementById("canvas");
-                var ctx = c.getContext("2d");
+                function drawImage(imageObj) {
+                    var stage = new Kinetic.Stage({
+                        container: "canvas",
+                        width: 624,
+                        height: 624
+                    });
+                    var layer = new Kinetic.Layer();
 
-                //initial ship position
-                var x = canvas.width;
-                var y = canvas.height;
-                var s = 10;
+                    // king
+                    var wkingImg = new Kinetic.Image({
+                        image: imageObj,
+                        x: stage.getWidth() / 2 - 40 / 2,
+                        y: stage.getHeight() / 2 - 40 / 2,
+                        width: 40,
+                        height: 40,
+                        draggable: true,
+                    });
 
-                var drawship = function (side) {
-                    //reset the background
-                    ctx.fillStyle = "#FFFFFF";
-                    ctx.strokeStyle = "#FFFFFF";
-                    ctx.fillRect(0, 0, 800, 600);
+                    // add cursor styling
+                    wkingImg.on('mouseover', function () {
+                        document.body.style.cursor = 'pointer';
+                    });
+                    wkingImg.on('mouseout', function () {
+                        document.body.style.cursor = 'default';
+                    });
 
-                    var w = side;
-                    var h = side * (Math.sqrt(3) / 2);
-                    ctx.save();
-                    ctx.translate(x / 2, y / 2);
-                    ctx.beginPath();
-                    ctx.moveTo(0, -h / 2);
-                    ctx.lineTo(w / 2, h / 2);
-                    ctx.lineTo(-w / 2, h / 2);
-                    ctx.lineTo(0, -h / 2);
-                    ctx.lineCap = 'round';
-                    ctx.strokeStyle = '#000';
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
-                    ctx.fill();
-                    ctx.closePath();
-                    ctx.restore();
+                    wkingImg.on('dragend touchend', function () {
+                        x = wkingImg.getPosition().x;
+                        y = wkingImg.getPosition().y;
+                        socket.emit('xy', { x: x, y: y });
+                    });
+
+                    socket.on('returnxy', function (data) {
+                        x = data["x"];
+                        y = data["y"];
+                        wkingImg.setPosition(x, y);
+                        console.log(x + ", " + y);
+                        layer.add(wkingImg);
+                        stage.add(layer);
+                        return false;
+                    });
+
+                    layer.add(wkingImg);
+                    stage.add(layer);
+                }
+                var imageObj = new Image();
+                imageObj.onload = function () {
+                    drawImage(this);
                 };
-
-                //keyboard
-                $(document).keyup(function (e) {
-                    e.preventDefault();
-                    switch (e.keyCode) {
-                        case 37:
-                            //left
-                            x -= 10;
-                            socket.emit('xy', { x: x, y: y });
-                            socket.on('returnxy', function (data) {
-                                x = data["x"];
-                                y = data["y"];
-                                drawship(s);
-                                return false;
-                            });
-                            break;
-                        case 38:
-                            //up
-                            y -= 10;
-                            socket.emit('xy', { x: x, y: y });
-                            socket.on('returnxy', function (data) {
-                                x = data["x"];
-                                y = data["y"];
-                                drawship(s);
-                                return false;
-                            });
-                            break;
-                        case 39:
-                            //right
-                            x += 10;
-                            socket.emit('xy', { x: x, y: y });
-                            socket.on('returnxy', function (data) {
-                                x = data["x"];
-                                y = data["y"];
-                                drawship(s);
-                                return false;
-                            });
-                            break;
-                        case 40:
-                            //down
-                            y += 10;
-                            socket.emit('xy', { x: x, y: y });
-                            socket.on('returnxy', function (data) {
-                                x = data["x"];
-                                y = data["y"];
-                                drawship(s);
-                                return false;
-                            });
-                            break;
-                    }
-                });
-
-                //ipad/mobile
-                $('#canvas').bind('touchmove', function (e) {
-                    e.preventDefault();
-                    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-                    x = touch.pageX - 90;
-                    y = touch.pageY - 140;
-                    drawship(s);
-                    return false;
-                });
-
+                imageObj.src = 'img/wking.gif';
             </script>
 
         </div>
