@@ -106,12 +106,197 @@ function start(route, handle) {
             io.sockets.emit('userlist', userlist);
         });
 
-        socket.on('xy', function (data) {
+        socket.on('wkingxy', function (data) {
             x = data["x"];
             y = data["y"];
-            io.sockets.emit('returnxy', { x: x, y: y })
+            io.sockets.emit('returnwkingxy', { x: x, y: y })
         });
 
+        socket.on('wqueenxy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwqueenxy', { x: x, y: y })
+        });
+
+        socket.on('wbishop1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwbishop1xy', { x: x, y: y })
+        });
+
+        socket.on('wbishop2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwbishop2xy', { x: x, y: y })
+        });
+
+        socket.on('wknight1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwknight1xy', { x: x, y: y })
+        });
+
+        socket.on('wknight2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwknight2xy', { x: x, y: y })
+        });
+
+        socket.on('wrook1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwrook1xy', { x: x, y: y })
+        });
+
+        socket.on('wrook2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwrook2xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn1xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn2xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn3xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn3xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn4xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn4xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn5xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn5xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn6xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn6xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn7xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn7xy', { x: x, y: y })
+        });
+
+        socket.on('wpawn8xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwpawn8xy', { x: x, y: y })
+        });
+
+        socket.on('bkingxy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnwbingxy', { x: x, y: y })
+        });
+
+        socket.on('bqueenxy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbqueenxy', { x: x, y: y })
+        });
+
+        socket.on('bbishop1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbbishop1xy', { x: x, y: y })
+        });
+
+        socket.on('bbishop2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbbishop2xy', { x: x, y: y })
+        });
+
+        socket.on('bknight1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbknight1xy', { x: x, y: y })
+        });
+
+        socket.on('bknight2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbknight2xy', { x: x, y: y })
+        });
+
+        socket.on('brook1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbrook1xy', { x: x, y: y })
+        });
+
+        socket.on('brook2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbrook2xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn1xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn1xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn2xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn2xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn3xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn3xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn4xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn4xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn5xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn5xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn6xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn6xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn7xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn7xy', { x: x, y: y })
+        });
+
+        socket.on('bpawn8xy', function (data) {
+            x = data["x"];
+            y = data["y"];
+            io.sockets.emit('returnbpawn8xy', { x: x, y: y })
+        });
 
     });
 
