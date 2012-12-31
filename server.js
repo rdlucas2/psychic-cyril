@@ -205,7 +205,7 @@ function start(route, handle) {
         socket.on('bkingxy', function (data) {
             x = data["x"];
             y = data["y"];
-            io.sockets.emit('returnwbingxy', { x: x, y: y })
+            io.sockets.emit('returnbkingxy', { x: x, y: y })
         });
 
         socket.on('bqueenxy', function (data) {
