@@ -6,6 +6,9 @@ function start(route, handle) {
     function onRequest(request, response) {
         var postData = "";
         var pathname = url.parse(request.url).pathname;
+        function ext(url) {
+            return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).substr(url.lastIndexOf("."))
+        }
 
         var filePath = '.' + request.url;
         if (filePath == './') {
@@ -28,7 +31,37 @@ function start(route, handle) {
                         }
                         else {
                             console.log("Request is a valid file - loading the file...");
-                            response.writeHead(200, { 'Content-Type': 'text/html' });
+                            var mimeType = ext(pathname);
+                            console.log(mimeType);
+                            switch(mimeType)
+                            {
+                                case ".css":
+                                    response.writeHead(200, { 'Content-Type': 'text/css' });
+                                    break;
+                                case ".txt":
+                                    response.writeHead(200, { 'Content-Type': 'text/plain' });
+                                    break;
+                                case ".js":
+                                    response.writeHead(200, { 'Content-Type': 'application/x-javascript ' });
+                                    break;
+                                case ".gif":
+                                    response.writeHead(200, { 'Content-Type': 'image/gif' });
+                                    break;
+                                case ".jpg":
+                                    response.writeHead(200, { 'Content-Type': 'image/jpeg' });
+                                    break;
+                                case ".jpe":
+                                    response.writeHead(200, { 'Content-Type': 'image/jpeg' });
+                                    break;
+                                case ".jpeg":
+                                    response.writeHead(200, { 'Content-Type': 'image/jpeg' });
+                                    break;
+                                case ".png":
+                                    response.writeHead(200, { 'Content-Type': 'text/css' });
+                                    break;
+                                default:
+                                    response.writeHead(200, { 'Content-Type': 'text/html' });
+                            }
                             response.end(content, 'utf-8');
                         }
                     });
@@ -67,6 +100,7 @@ function start(route, handle) {
 
         var UNAME = "";
         socket.on('set nickname', function (name) {
+            console.log('hi');
             if (userlist.hasOwnProperty(name) || name == null || name == "") {
                 socket.emit('duplicateNickname');
             }

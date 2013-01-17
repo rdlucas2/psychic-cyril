@@ -1,0 +1,17 @@
+#main {
+    height: 220px;
+    width: 800px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+#USERS {
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+#userouter {
+    height: 220px;
+    width: 200px;
+    clear: both;
+}
