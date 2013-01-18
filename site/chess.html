@@ -35,6 +35,15 @@
             background: url(/img/EmptyBoard.gif) no-repeat;
         }
     </style>
+    <script>
+        $(document).ready(function() {
+            $('.bar').animate({
+            width: "100%"
+        }, 10000, function() {
+            // Animation complete.
+        });
+        });
+    </script>
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -51,6 +60,10 @@
             <p class="alert-error"></p>
             <input type="text" id="username" name="username" />
             <input type="submit" value="Send" name="submit" id="SENDname" />
+            <p>Connecting to the game client, if you press send and nothing happens, wait til the load bar is complete and try again.</p>
+            <div class="progress progress-striped active">
+            <div class="bar" style="width: 1%;"></div>
+        </div>
         </div>
     </div>
 
