@@ -17,10 +17,33 @@
     <link rel="stylesheet" href="/css/main.css" type="text/css">
     <link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="/css/responsive.css" type="text/css">
+    <link rel="stylesheet" href="/css/chat.css" type="text/css">
 
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/v4.2.0/kinetic-v4.2.0.min.js" type="text/javascript"></script>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js" type="text/javascript"></script>
+    <style type="text/css">
+        .visible {display:inline}
+        .hidden {display:none}
+        #canvas {
+            width: 800px;
+            height: 624px;
+            overflow: hidden;
+            background: url(/img/EmptyBoard.gif) no-repeat;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('.bar').animate({
+            width: "100%"
+        }, 10000, function() {
+            // Animation complete.
+        });
+        });
+    </script>
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -28,14 +51,43 @@
 <![endif]-->
 
 <!-- Add your site or application content here -->
-<div class="container-fluid">
+<div class="container">
 
-    <div class="row-fluid">
+    <div class="row visible">
         <div class="span12">
-            <h4>Welcome.  I am in the process of building a new website.</h4>
-            <p>Visit the old site here - <a href="http://rdlucas.com">rdlucas.com</a></p>
+            <h1>Hello.</h1>
+            <h3>Please enter a username for chess & chat:</h3>
+            <p class="alert-error"></p>
+            <input type="text" id="username" name="username" />
+            <input type="submit" value="Send" name="submit" id="SENDname" />
+            <p>Connecting to the game client, if you press send and nothing happens, wait til the load bar is complete and try again.</p>
+            <div class="progress progress-striped active">
+            <div class="bar" style="width: 1%;"></div>
+        </div>
+        </div>
+    </div>
 
-            <p>I'm building a chess application for fun, it can be viewed here: <a href="http://www.rdlucas.com/chess.html">Chess & Chat</a></p>
+    <div class="row hidden">
+        <div class="span8">
+            <div id="canvas"></div>
+        </div>
+        <div class="span4">
+            <div id="main">
+                <div class="inner">
+                    <div class="message">
+                        <span class="user"></span><span class="sent"></span>
+                    </div>
+                </div>
+            </div>
+
+            <textarea id="TEXT" name="text"></textarea>
+            <input type="submit" value="Send" name="submit" id="SEND" />
+
+            <div id="userouter">
+                <h4>Users:</h4>
+                <div id="USERS"></div>
+            </div>
+
         </div>
     </div>
 </div>
