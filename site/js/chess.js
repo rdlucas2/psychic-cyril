@@ -1211,18 +1211,18 @@ function initStage(images) {
 
 window.onload = function () {
     var sources = {
-        wking: "../img/wking.gif",
-        wqueen: "../img/wqueen.gif",
-        wbishop: "../img/wbishop.gif",
-        wknight: "../img/wknight.gif",
-        wrook: "../img/wrook.gif",
-        wpawn: "../img/wpawn.gif",
-        bking: "../img/bking.gif",
-        bqueen: "../img/bqueen.gif",
-        bbishop: "../img/bbishop.gif",
-        bknight: "../img/bknight.gif",
-        brook: "../img/brook.gif",
-        bpawn: "../img/bpawn.gif",
+        wking: "img/wking.gif",
+        wqueen: "img/wqueen.gif",
+        wbishop: "img/wbishop.gif",
+        wknight: "img/wknight.gif",
+        wrook: "img/wrook.gif",
+        wpawn: "img/wpawn.gif",
+        bking: "img/bking.gif",
+        bqueen: "img/bqueen.gif",
+        bbishop: "img/bbishop.gif",
+        bknight: "img/bknight.gif",
+        brook: "img/brook.gif",
+        bpawn: "img/bpawn.gif",
     };
     loadImages(sources, initStage);
 };
